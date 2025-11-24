@@ -63,3 +63,208 @@ A oportunidade é mapear a **curva de desistência**, para entender quanto tempo
 - **Time-to-Abandonment:** Métrica definida como o intervalo entre o primeiro e o último commit.  
 - **Hipótese da Curva da Empolgação:** Teoria que sugere que o esforço em projetos pessoais decai rapidamente após o fim da novidade inicial.
 
+# 3. Objetivos e questões (Goal / Question / Metric)
+
+## 3.1 Objetivo geral (Goal template)
+
+### Elemento
+
+-   **Analisar**
+    -   Repositórios de software pessoais (Open Source)
+-   **Com o propósito de**
+    -   Caracterizar a longevidade, identificar pontos críticos de
+        abandono e validar infraestrutura de coleta de dados
+-   **Sob a perspectiva de**
+    -   Pesquisador de Engenharia de Software (MSR)
+-   **No contexto de**
+    -   Projetos criados no GitHub durante o ano de 2022, nas linguagens
+        Python e JavaScript
+
+## 3.2 Objetivos específicos
+
+-   **O1:** Mapear a distribuição estatística do tempo de vida
+    (Lifespan) dos repositórios para determinar a mediana de
+    sobrevivência.
+-   **O2:** Investigar a existência de um padrão de "morte precoce"
+    (abandono nos primeiros meses) e quantificar esse fenômeno.
+-   **O3:** Analisar se a escolha da linguagem de programação (Python
+    vs. JavaScript) influencia a taxa de abandono.
+-   **O4:** Correlacionar o tamanho e complexidade inicial do projeto
+    com sua capacidade de sobrevivência a longo prazo.
+
+## 3.3 e 3.4 Matriz GQM (Questões e Métricas)
+
+### O1 (Distribuição)
+
+-   **Q1.1** Qual é a mediana e a média de tempo de vida dos projetos
+    analisados?
+    -   **Métricas:**
+        -   M01 --- Lifespan (Days)
+        -   M02 --- Date Created
+-   **Q1.2** Qual a proporção de projetos "One-Hit Wonder" (apenas um
+    dia de atividade)?
+    -   **Métricas:**
+        -   M03 --- Commit Count
+        -   M01 --- Lifespan (Days)
+-   **Q1.3** Existe uma variação significativa na longevidade entre
+    semestres de criação?
+    -   **Métricas:**
+        -   M02 --- Date Created
+        -   M01 --- Lifespan (Days)
+
+### O2 (Morte Precoce)
+
+-   **Q2.1** Qual a porcentagem de repositórios abandonados em menos de
+    90 dias?
+    -   **Métricas:**
+        -   M04 --- Early Dropout Rate
+        -   M01 --- Lifespan (Days)
+-   **Q2.2** Em qual mês ocorre o pico de taxa de abandono?
+    -   **Métricas:**
+        -   M05 --- Peak Abandonment Month
+        -   M06 --- Last Commit Date
+-   **Q2.3** Projetos que sobrevivem aos primeiros 3 meses tendem a
+    durar quanto tempo mais?
+    -   **Métricas:**
+        -   M07 --- Conditional Lifespan
+        -   M01 --- Lifespan (Days)
+
+### O3 (Linguagem)
+
+-   **Q3.1** Existe diferença estatística na mediana de vida entre
+    projetos Python e JavaScript?
+    -   **Métricas:**
+        -   M08 --- Primary Language
+        -   M01 --- Lifespan (Days)
+-   **Q3.2** Qual linguagem apresenta maior taxa de projetos com menos
+    de 10 commits?
+    -   **Métricas:**
+        -   M08 --- Primary Language
+        -   M03 --- Commit Count
+-   **Q3.3** A frequência de commits varia conforme a linguagem?
+    -   **Métricas:**
+        -   M09 --- Commit Frequency
+        -   M08 --- Primary Language
+
+### O4 (Complexidade)
+
+-   **Q4.1** Projetos que iniciam maiores (em KB) tendem a viver mais?
+    -   **Métricas:**
+        -   M10 --- Repository Size
+        -   M01 --- Lifespan (Days)
+-   **Q4.2** A quantidade de arquivos iniciais é um preditor de
+    longevidade?
+    -   **Métricas:**
+        -   M11 --- File Count (Initial)
+        -   M01 --- Lifespan (Days)
+-   **Q4.3** Repositórios com descrições detalhadas sobrevivem mais?
+    -   **Métricas:**
+        -   M12 --- Description Length
+        -   M01 --- Lifespan (Days)
+
+# 4. Escopo e contexto do experimento
+
+## 4.1 Escopo funcional / de processo
+
+### Incluído
+
+-   Repositórios públicos criados entre 01/01/2022 e 31/12/2022.
+-   Linguagens: Python e JavaScript.
+-   Projetos pessoais (usuário normal, não organização).
+-   Análise de metadados e histórico de commits.
+
+### Excluído
+
+-   Repositórios Fork.
+-   Repositórios com 0 ou 1 commit.
+-   Análise qualitativa de código.
+-   Análise de issues, PRs ou interações sociais.
+
+## 4.2 Contexto do estudo
+
+-   Pesquisa exploratória em contexto acadêmico.
+-   Organização: Universidade / Trabalho Individual.
+-   Tipo: Mineração de Dados e Análise Estatística.
+-   Criticidade: Baixa.
+-   Perfil: Projeto de aprendizado e validação técnica para TCC.
+
+## 4.3 Premissas
+
+-   A API do GitHub permanecerá estável.
+-   Datas de commits representam corretamente o trabalho realizado.
+-   Inatividade \> 12 meses representa abandono.
+
+## 4.4 Restrições
+
+-   Rate Limit: 5.000 requisições/hora.
+-   Conclusão do experimento em 1 semestre.
+-   Dados devem caber em memória local.
+
+## 4.5 Limitações previstas
+
+-   Resultados de Python/JS não representam outras linguagens.
+-   Projetos "concluídos" podem parecer abandonados.
+-   Commits automáticos podem distorcer padrões.
+
+# 5. Stakeholders e impacto esperado
+
+## 5.1 Stakeholders principais
+
+-   Pesquisador (Aluno)
+-   Orientador Acadêmico
+-   Comunidade de MSR
+
+## 5.2 Interesses e expectativas
+
+-   Pesquisador: validar scripts e aprender técnicas de sobrevivência.
+-   Orientador: garantir rigor metodológico.
+-   Comunidade: acesso a dados empíricos sobre saúde do OSS.
+
+## 5.3 Impactos
+
+-   Processo: reduz risco técnico do TCC.
+-   Produto: fornece base para capítulo analítico da monografia.
+
+# 6. Riscos, premissas e critérios de sucesso
+
+## 6.1 Riscos
+
+-   Bloqueio por abuso da API.
+-   Amostra majoritariamente de projetos inúteis/ruins.
+-   ETL demorado demais.
+
+## 6.2 Critérios de sucesso (go/no-go)
+
+-   GO: coletar \> 1000 repositórios válidos.
+-   GO: gerar CSV limpo e completo.
+-   NO-GO: mudança nas permissões da API.
+
+## 6.3 Critérios de parada antecipada
+
+-   Mais de 90% dos dados serem bots/espelhos.
+-   Revogação da chave da API.
+
+# 7. Modelo conceitual e hipóteses
+
+## 7.1 Modelo conceitual
+
+-   **Entrada:** tamanho inicial, complexidade, linguagem.
+-   **Processo:** fluxo de commits ao longo do tempo.
+-   **Saída:** abandono.
+-   **Esquema:** entusiasmo → dificuldades → queda de commits → morte.
+
+## 7.2 Hipóteses
+
+-   **H0:** taxa de abandono constante.
+-   **H1:** abandono concentra-se nos primeiros 6 meses.
+-   **H0_lang:** não há diferença entre Python e JS.
+-   **H1_lang:** Python vive mais que JS.
+
+## 7.3 Nível de significância
+
+-   α = 0.05
+-   Poder esperado \> 0.80
+
+
+
+
