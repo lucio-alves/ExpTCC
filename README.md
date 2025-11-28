@@ -271,7 +271,7 @@ A oportunidade é mapear a **curva de desistência**, para entender quanto tempo
 Os objetos de estudo são **repositórios de software hospedados publicamente no GitHub**. Especificamente, serão analisados os metadados do projeto (tamanho, linguagem, descrição) e o histórico de versionamento (log de commits, timestamps).
 
 ## 8.2 Sujeitos / participantes (visão geral)
-Neste estudo de MSR (Mining Software Repositories), não há participantes humanos ativos realizando tarefas em tempo real. Os "sujeitos" são, indiretamente, os **desenvolvedores proprietários das contas pessoais** que criaram os repositórios em 2022. O comportamento deles é analisado *post-mortem* (após o fato) através dos rastros digitais deixados nos commits.
+Neste estudo de MSR (*Mining Software Repositories*), não há participantes humanos ativos realizando tarefas em tempo real. Os "sujeitos" são, indiretamente, os **desenvolvedores proprietários das contas pessoais** que criaram os repositórios em 2022. O comportamento deles é analisado *post-mortem* (após o fato) através dos rastros digitais deixados nos commits.
 
 ## 8.3 Variáveis independentes (fatores) e seus níveis
 Os fatores que serão utilizados para segmentar e comparar os dados são:
@@ -283,22 +283,36 @@ Os fatores que serão utilizados para segmentar e comparar os dados são:
     * Nível 2: Médio/Grande (acima do 1º quartil)
 
 ## 8.4 Tratamentos (condições experimentais)
-Como se trata de um estudo observacional (ex-post facto) e não de um experimento controlado manipulado, os "tratamentos" referem-se aos grupos naturais observados:
-1.  **Grupo Python:** Repositórios onde a linguagem dominante detectada pelo GitHub é Python.
-2.  **Grupo JavaScript:** Repositórios onde a linguagem dominante detectada pelo GitHub é JavaScript.
-*A distinção ocorre pela tecnologia escolhida pelo desenvolvedor no momento da criação.*
+Como se trata de um estudo observacional (*ex-post facto*) e não de um experimento controlado manipulado, os "tratamentos" referem-se aos grupos naturais formados pelas escolhas dos desenvolvedores. A tabela abaixo ilustra o desenho fatorial (2x2) e as combinações de tratamento:
+
+| ID do Grupo | Fator A: Linguagem | Fator B: Complexidade (Tamanho)* | Descrição do Tratamento (Combinação) |
+| :--- | :--- | :--- | :--- |
+| **G1 (PY-S)** | Python | Pequeno (1º Quartil) | Projetos Python de baixa complexidade inicial. |
+| **G2 (PY-L)** | Python | Médio/Grande (> 1º Quartil) | Projetos Python de maior complexidade inicial. |
+| **G3 (JS-S)** | JavaScript | Pequeno (1º Quartil) | Projetos JavaScript de baixa complexidade inicial. |
+| **G4 (JS-L)** | JavaScript | Médio/Grande (> 1º Quartil) | Projetos JavaScript de maior complexidade inicial. |
+*\*Nota: A definição de "Pequeno" e "Grande" será baseada na distribuição estatística (quartis) dos dados coletados.*
 
 ## 8.5 Variáveis dependentes (respostas)
-As medidas de resultado (retomando a seção 3) são:
-1.  **Lifespan (Tempo de Vida):** Dias entre o primeiro e o último commit (`LastDate - CreateDate`).
-2.  **Status de Sobrevivência:** Variável binária indicando se o projeto sobreviveu além de um limiar temporal (ex: > 90 dias).
+As medidas de resultado focam na longevidade e atividade:
+1.  **Lifespan (Tempo de Vida):** Dias entre o primeiro e o último commit.
+2.  **Status de Sobrevivência:** Variável binária (0 ou 1) indicando se o projeto sobreviveu além de um limiar temporal (ex: > 90 dias).
 3.  **Densidade de Manutenção:** Frequência de commits durante o período de vida.
 
 ## 8.6 Variáveis de controle / bloqueio
-Fatores mantidos constantes para reduzir ruído:
-* **Período de Criação:** Apenas projetos criados em 2022 (para garantir janela de observação igual).
-* **Tipo de Proprietário:** Apenas contas de usuários (`User`), excluindo organizações (`Organization`).
-* **Origem:** Apenas repositórios originais, excluindo `Forks`.
+Fatores mantidos constantes para reduzir ruído e garantir a comparabilidade da amostra. A tabela a seguir resume todas as variáveis do estudo (Independentes, Dependentes e de Controle):
+
+### Tabela Resumo das Variáveis
+| Tipo de Variável | Nome da Variável | Descrição Operacional | Escala / Unidade |
+| :--- | :--- | :--- | :--- |
+| **Independente (Fator)** | Linguagem Principal | A linguagem predominante no repositório detectada pelo GitHub. | Nominal (Python, JavaScript) |
+| **Independente (Fator)** | Tamanho Inicial | O tamanho do repositório em KB no momento da coleta. | Ordinal (Pequeno, Médio/Grande) |
+| **Dependente (Resposta)** | Lifespan (Tempo de Vida) | Diferença em dias entre a data do último commit e a data de criação. | Razão (Dias) |
+| **Dependente (Resposta)** | Status de Sobrevivência | Indicador binário se o projeto ultrapassou 90 dias de vida. | Nominal (0 = Morreu, 1 = Sobreviveu) |
+| **Dependente (Resposta)** | Densidade de Manutenção | Quantidade de commits dividida pelo tempo de vida. | Razão (Commits/Dia) |
+| **Controle** | Ano de Criação | Filtro aplicado para selecionar apenas projetos de 2022. | Intervalar (Ano 2022) |
+| **Controle** | Tipo de Proprietário | Filtro para excluir organizações e manter apenas usuários individuais. | Nominal (User) |
+| **Controle** | Origem do Repositório | Filtro para excluir *Forks* e manter apenas originais. | Nominal (Source) |
 
 ## 8.7 Possíveis variáveis de confusão conhecidas
 * **Bots e Automação:** Commits gerados automaticamente podem inflar o tempo de vida. (Mitigação: filtro de autores conhecidos como bots).
@@ -311,10 +325,10 @@ Fatores mantidos constantes para reduzir ruído:
 
 ## 9.1 Tipo de desenho
 Será utilizado um **Estudo de Coorte Retrospectivo (Longitudinal)**.
-*Justificativa:* Não é possível randomizar desenvolvedores para usar Python ou JS. Devemos olhar para trás (retrospectivo) em uma coorte (grupo) de projetos iniciados em 2022 e observar como eles evoluíram ao longo do tempo.
+*Justificativa:* Não é possível randomizar desenvolvedores para usar Python ou JS aleatoriamente em seus projetos pessoais. A abordagem correta é olhar para trás (retrospectivo) em uma coorte (grupo) de projetos iniciados em 2022 e observar como eles evoluíram ao longo do tempo até o abandono.
 
 ## 9.2 Randomização e alocação
-Não haverá randomização de sujeitos. A alocação nos grupos (Python vs. JS) é determinada pela propriedade intrínseca do repositório.
+Não haverá randomização de sujeitos (desenvolvedores). A alocação nos grupos (Python vs. JS) é determinada pela propriedade intrínseca do repositório.
 Para a seleção dos dados, se o universo de dados exceder o limite da API, será feita uma **amostragem aleatória simples** dentro do conjunto de resultados retornados pela query de busca do GitHub.
 
 ## 9.3 Balanceamento e contrabalanço
@@ -322,7 +336,7 @@ Para a seleção dos dados, se o universo de dados exceder o limite da API, ser�
 * **Contrabalanço:** Não aplicável, pois não há ordem de tarefas executadas por humanos.
 
 ## 9.4 Número de grupos e sessões
-* **Grupos:** 2 Grupos principais (Python e JavaScript).
+* **Grupos:** 2 Grupos principais (Python e JavaScript), subdivididos por complexidade conforme Tabela 8.4.
 * **Sessões:** 1 Sessão única de extração de dados. O script roda uma vez para coletar todo o histórico disponível até a data presente.
 
 ---
@@ -343,20 +357,19 @@ Para ser elegível, o repositório deve:
 Serão descartados:
 1.  Repositórios marcados como `Fork`.
 2.  Repositórios sem descrição ou vazios.
-3.  Projetos identificados como "trabalho de casa" óbvio (ex: nomes como "TP1-Algoritmos" ou "Lista-Exercicios"), caso o volume seja alto e distorça a análise de "projetos pessoais".
+3.  Projetos identificados como "trabalho de casa" óbvio (ex: nomes como "TP1-Algoritmos" ou "Lista-Exercicios"), caso o volume seja alto e distorça a análise de "projetos pessoais voluntários".
 
 ## 10.4 Tamanho da amostra planejado
 * **Total:** 2.000 a 4.000 repositórios.
 * **Por Grupo:** Mínimo de 1.000 repositórios válidos para Python e 1.000 para JavaScript.
-* *Justificativa:* Amostras grandes são necessárias em MSR devido à alta variância e ruído nos dados (muitos projetos abandonados no dia 1).
+* *Justificativa:* Amostras grandes são necessárias em MSR devido à alta variância e ruído nos dados (muitos projetos abandonados no dia 1, os chamados "one-hit wonders").
 
 ## 10.5 Método de seleção / recrutamento
 Seleção via **GitHub Search API**.
-A query será construída para buscar repositórios criados nas datas estipuladas. A seleção dos IDs será feita aleatoriamente a partir das páginas de resultados da API para evitar viés de relevância (já que o GitHub ordena por "best match" por padrão).
+A query será construída para buscar repositórios criados nas datas estipuladas. A seleção dos IDs será feita aleatoriamente a partir das páginas de resultados da API para evitar viés de relevância (visto que o GitHub ordena por "best match" ou "most stars" por padrão).
 
-## 10.6 Treinamento e preparação
-Não aplicável a participantes humanos.
-A "preparação" refere-se à validação dos scripts de coleta (ver seção 11.4 - Piloto).
+## 10.6 Treinamento e preparação dos sujeitos
+Não aplicável a participantes humanos. A "preparação" refere-se à validação técnica dos scripts de coleta (ver seção 11.4 - Piloto).
 
 ---
 
@@ -371,7 +384,7 @@ A "preparação" refere-se à validação dos scripts de coleta (ver seção 11.
 * Documentação oficial da API do GitHub.
 * Lista de Tokens de Acesso Pessoal (PAT) para evitar bloqueio por *Rate Limit*.
 
-## 11.3 Procedimento experimental (Protocolo)
+## 11.3 Procedimento experimental (Protocolo – visão passo a passo)
 1.  **Configuração:** Carregar chaves de API e bibliotecas no ambiente Python.
 2.  **Descoberta:** Executar query de busca para listar URLs de repositórios candidatos (meta: 5.000 candidatos).
 3.  **Filtragem Prévia:** Iterar sobre a lista e descartar Forks ou projetos arquivados/bloqueados.
@@ -385,14 +398,14 @@ A "preparação" refere-se à validação dos scripts de coleta (ver seção 11.
 ## 11.4 Plano de piloto
 * **Escopo:** Execução completa do pipeline com apenas 50 repositórios de cada linguagem.
 * **Objetivo:** Verificar se as métricas de tempo estão sendo calculadas corretamente e estimar o tempo de execução (custo de API) para a amostra total.
-* **Ajuste:** Se o tempo de coleta for > 1 hora, otimizar chamadas de API (ex: usar GraphQL em vez de REST).
+* **Ajuste:** Se o tempo de coleta for > 1 hora, otimizar chamadas de API (ex: usar GraphQL em vez de REST para buscar commits e metadados em uma única query).
 
 ---
 
 # 12. Plano de análise de dados (pré-execução)
 
 ## 12.1 Estratégia geral de análise
-A análise será focada em **Análise de Sobrevivência**. Os dados serão tratados como tempo até a ocorrência de um evento (o "abandono").
+A análise será focada em **Análise de Sobrevivência**. Os dados não serão tratados apenas como médias simples, mas como "tempo até a ocorrência de um evento" (o evento sendo o abandono do repositório).
 
 ## 12.2 Métodos estatísticos planejados
 1.  **Estimador Kaplan-Meier:** Para plotar as curvas de sobrevivência de ambos os grupos e visualizar a queda de participação ao longo do tempo.
@@ -400,8 +413,8 @@ A análise será focada em **Análise de Sobrevivência**. Os dados serão trata
 3.  **Estatística Descritiva:** Média, Mediana e Desvio Padrão para tempo de vida e número de commits.
 
 ## 12.3 Tratamento de dados faltantes e outliers
-* **Faltantes:** Repositórios com dados corrompidos na API serão excluídos da amostra (listwise deletion).
-* **Outliers:** Projetos com tempo de vida > 365 dias serão mantidos (pois são casos de sucesso), mas projetos com > 10.000 commits (provável bot/espelho) serão removidos para não distorcer a média.
+* **Faltantes:** Repositórios com dados corrompidos na resposta da API serão excluídos da amostra (*listwise deletion*).
+* **Outliers:** Projetos com tempo de vida > 365 dias serão mantidos (pois são casos de sucesso, ou "censurados à direita"), mas projetos com > 10.000 commits (provável bot/espelho) serão removidos para não distorcer a média de atividade humana.
 
 ## 12.4 Plano de análise para dados qualitativos
 Não haverá análise qualitativa profunda (leitura de código). A análise será estritamente quantitativa baseada em metadados.
@@ -411,72 +424,70 @@ Não haverá análise qualitativa profunda (leitura de código). A análise ser�
 # 13. Avaliação de validade (ameaças e mitigação)
 
 ## 13.1 Validade de conclusão
-* *Ameaça:* Poder estatístico insuficiente devido a alta variância.
-* *Mitigação:* Uso de amostra grande (> 2000 itens) para garantir robustez nos testes estatísticos.
+* *Ameaça:* Poder estatístico insuficiente devido à alta variância natural dos dados de software (muitos projetos morrem, poucos vivem muito).
+* *Mitigação:* Uso de amostra grande (> 2.000 itens) para garantir robustez nos testes estatísticos e reduzir o erro padrão.
 
 ## 13.2 Validade interna
-* *Ameaça (Maturação/História):* O "abandono" pode ser apenas uma migração para outro host (GitLab) ou mudança de nome do repositório.
-* *Mitigação:* Assumir a premissa de que, para fins de análise do GitHub, a inatividade > 1 ano equivale a abandono na plataforma. Não é possível rastrear o dev fora do GitHub.
+* *Ameaça (Maturação/História):* O "abandono" pode ser apenas uma migração para outro host (ex: GitLab) ou mudança de nome do repositório, sem que o projeto tenha realmente morrido.
+* *Mitigação:* Assumir a premissa de que, para fins de análise do ecossistema GitHub, a inatividade > 1 ano equivale a abandono na plataforma. Não é viável rastrear o desenvolvedor fora do GitHub.
 
 ## 13.3 Validade de constructo
-* *Ameaça:* A métrica "Last Commit Date" pode não refletir o abandono real (ex: o dev parou meses antes e deu um push final de limpeza).
-* *Mitigação:* Considerar a densidade de commits. Se houver um gap muito grande antes do último commit, considerar a data anterior.
+* *Ameaça:* A métrica "Last Commit Date" pode não refletir o abandono real (ex: o dev parou meses antes e deu um push final de limpeza apenas para arrumar o *readme*).
+* *Mitigação:* Considerar a densidade de commits. Se houver um gap muito grande (> 6 meses) antes do último commit, considerar a data anterior ao gap como o fim efetivo do desenvolvimento ativo.
 
 ## 13.4 Validade externa
 * *Ameaça:* Os resultados de 2022 podem não se aplicar a 2025 ou a linguagens corporativas (Java/C#).
-* *Mitigação:* Deixar claro no relatório que o escopo é limitado a linguagens de script dinâmicas em contexto de projetos pessoais recentes.
+* *Mitigação:* Deixar claro no relatório que o escopo é limitado a linguagens de *script* dinâmicas em contexto de projetos pessoais recentes, não generalizando para software industrial.
 
-## 13.5 Resumo das principais ameaças
-| Ameaça | Estratégia |
+## 13.5 Resumo das principais ameaças e estratégias de mitigação
+| Ameaça | Estratégia de Mitigação |
 | :--- | :--- |
-| Projetos de "Brinquedo" (Hello World) | Filtrar repos com < 2 commits ou < 3 arquivos. |
-| Limitação da API (Amostragem enviesada) | Randomizar a paginação da busca. |
-| Identificação incorreta de linguagem | Confiar na classificação majoritária do GitHub (Linguist). |
+| Projetos de "Brinquedo" (*Hello World*) | Filtrar repositórios com < 2 commits ou < 3 arquivos. |
+| Limitação da API (Amostragem enviesada) | Randomizar a paginação da busca para não pegar apenas os mais populares. |
+| Identificação incorreta de linguagem | Confiar na classificação majoritária do GitHub (*Linguist*), aceitando pequena margem de erro. |
 
 ---
 
 # 14. Ética, privacidade e conformidade
 
-## 14.1 Questões éticas
-O estudo utiliza dados secundários públicos. Não há interação direta com seres humanos nem intervenção no ambiente de trabalho deles. O risco ético é mínimo ("Minimal Risk").
+## 14.1 Questões éticas (uso de sujeitos)
+O estudo utiliza dados secundários públicos. Não há interação direta com seres humanos nem intervenção no ambiente de trabalho deles. O risco ético é considerado mínimo (*Minimal Risk*).
 
 ## 14.2 Consentimento informado
-Ao utilizar o GitHub, os usuários concordam com os Termos de Serviço que permitem a visualização pública de seus repositórios. A coleta de dados para fins acadêmicos (sem fins comerciais ou de identificação maliciosa) está dentro do uso aceitável da plataforma. Não é necessário consentimento explícito individual.
+Ao utilizar o GitHub, os usuários concordam com os Termos de Serviço que permitem a visualização pública e a clonagem de seus repositórios públicos. A coleta de dados para fins acadêmicos (sem fins comerciais ou de identificação maliciosa) está dentro do uso aceitável da plataforma. Não é necessário consentimento explícito individual de cada desenvolvedor.
 
 ## 14.3 Privacidade e proteção de dados
 * **Dados Coletados:** Nome do repositório, nome do usuário (login), datas, mensagens de commit.
-* **Proteção:** No dataset final divulgado (se houver), os nomes de usuários e e-mails serão **pseudoanonimizados** (substituídos por hash ID) para evitar indexação por motores de busca e preservar a privacidade dos desenvolvedores amadores.
+* **Proteção:** No dataset final divulgado (se houver), os nomes de usuários e e-mails serão **pseudoanonimizados** (substituídos por um ID hash) para evitar indexação direta por motores de busca e preservar a privacidade dos desenvolvedores amadores.
 * **Retenção:** Dados brutos com identificadores serão apagados após a defesa do TCC.
 
 ## 14.4 Aprovações necessárias
-* **Comitê de Ética:** Geralmente dispensado para dados públicos de MSR, mas será consultado o orientador para confirmação das regras da instituição.
-* **Plataforma:** O uso deve respeitar o *Rate Limit* e os *Terms of Service* do GitHub.
+* **Comitê de Ética:** Geralmente dispensado para dados públicos de MSR, mas será consultado o orientador para confirmação das regras específicas da instituição de ensino.
+* **Plataforma:** O uso deve respeitar rigorosamente o *Rate Limit* e os *Terms of Service* do GitHub para evitar banimento da conta do pesquisador.
 
 ---
 
 # 15. Recursos, infraestrutura e orçamento
 
 ## 15.1 Recursos humanos e papéis
-* **Pesquisador (Lúcio Alves):** Desenvolvimento dos scripts, coleta, análise estatística e escrita.
-* **Orientador:** Revisão do desenho experimental e validação dos resultados.
+* **Pesquisador Principal (Lúcio Alves):** Desenvolvimento dos scripts de coleta, execução do experimento, análise estatística e escrita da monografia.
+* **Orientador Acadêmico:** Revisão do desenho experimental, orientação metodológica e validação dos resultados obtidos.
 
 ## 15.2 Infraestrutura técnica necessária
-* **Computador Pessoal:** Para desenvolvimento e processamento leve.
-* **Google Colab (Free Tier):** Para execução dos scripts de coleta (vantagem de IP rotativo e ambiente nuvem).
-* **Armazenamento:** Google Drive (aprox. 500MB de espaço para CSVs).
+* **Computador Pessoal:** Para desenvolvimento dos scripts e redação.
+* **Google Colab (Plano Gratuito):** Para execução dos scripts de coleta em nuvem (vantagem de IP rotativo e ambiente Python pré-configurado).
+* **Armazenamento:** Google Drive (aprox. 500MB de espaço para CSVs brutos e processados).
 
 ## 15.3 Materiais e insumos
-* Conta no GitHub (para geração de Token).
-* Bibliotecas Python: `PyGithub`, `pandas`, `lifelines` (para análise de sobrevivência), `matplotlib`.
+* Conta no GitHub (para geração de Token de Acesso Pessoal).
+* Bibliotecas Python Open Source: `PyGithub`, `pandas`, `lifelines` (para análise de sobrevivência), `matplotlib`/`seaborn`.
 
 ## 15.4 Orçamento e custos estimados
-O projeto é de **baixo custo financeiro**, dependendo principalmente de horas-homem.
+O projeto é de **baixo custo financeiro**, dependendo principalmente de horas de dedicação do pesquisador.
 
-| Item | Custo Estimado (R$) | Fonte |
+| Item | Custo Estimado (R$) | Fonte de Financiamento |
 | :--- | :--- | :--- |
-| Licença GitHub API | R$ 0,00 (Gratuito) | Free Tier |
+| Licença GitHub API | R$ 0,00 (Gratuito) | Free Tier (Limite de 5k req/h) |
 | Google Colab | R$ 0,00 (Gratuito) | Free Tier |
-| Horas de Trabalho (Pesquisador) | 100h (Inestimável) | Dedicação Acadêmica |
+| Horas de Trabalho (Pesquisador) | ~120h (Inestimável) | Dedicação Acadêmica (Não remunerada) |
 | **Total Financeiro** | **R$ 0,00** | - |
-
-
