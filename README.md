@@ -1,7 +1,7 @@
 # 1. Identificação Básica
 
 ## 1.1 Título do Experimento
-**A Crise de Meia-Idade dos Softwares: Análise de Sobrevivência e Pontos de Abandono em Repositórios Pessoais**
+**A Vida dos Repositórios de Software: Análise de Sobrevivência e Pontos de Abandono em Repositórios Pessoais**
 
 ## 1.2 ID / Código
 **EXP-2024-MSR-PILOTO-01**
@@ -9,7 +9,7 @@
 ## 1.3 Versão do Documento e Histórico de Revisão
 | Versão | Data       | Autor      | Descrição das Alterações                 |
 |--------|------------|------------|-------------------------------------------|
-| v1.0   | 21/11/2025 | Lúcio Alves| Elaboração inicial do plano de experimento |
+| v1.3   | 28/11/2025 | Lúcio Alves| Elaboração inicial do plano de experimento |
 
 ## 1.4 Datas (criação, última atualização)
 - **Criação:** 21/11/2025 
@@ -24,7 +24,7 @@
 **Lúcio Alves** (Pesquisador Principal)
 
 ## 1.7 Projeto / Produto / Iniciativa Relacionada
-Este experimento atua como **Projeto Piloto (MVP)** para a iniciativa de TCC intitulada *"Impacto do Truck Factor na Descontinuidade de Software"*.  
+Este experimento atua como **Projeto Piloto (MVP)** para a iniciativa de TCC intitulada *"SECRET"*.  
 O objetivo é validar a infraestrutura de coleta de dados e métricas de longevidade antes de aplicá-las no estudo principal.
 
 ---
@@ -271,7 +271,7 @@ A oportunidade é mapear a **curva de desistência**, para entender quanto tempo
 Os objetos de estudo são **repositórios de software hospedados publicamente no GitHub**. Especificamente, serão analisados os metadados do projeto (tamanho, linguagem, descrição) e o histórico de versionamento (log de commits, timestamps).
 
 ## 8.2 Sujeitos / participantes (visão geral)
-Neste estudo de MSR (*Mining Software Repositories*), não há participantes humanos ativos realizando tarefas em tempo real. Os "sujeitos" são, indiretamente, os **desenvolvedores proprietários das contas pessoais** que criaram os repositórios em 2022. O comportamento deles é analisado *post-mortem* (após o fato) através dos rastros digitais deixados nos commits.
+Neste estudo de MSR (*Mining Software Repositories*), não há participantes humanos ativos realizando tarefas em tempo real. Os "sujeitos" são, indiretamente, os **desenvolvedores proprietários das contas pessoais** que criaram os repositórios em 2022. O comportamento deles é analisado *post-mortem* através dos rastros digitais deixados nos commits.
 
 ## 8.3 Variáveis independentes (fatores) e seus níveis
 Os fatores que serão utilizados para segmentar e comparar os dados são:
@@ -283,7 +283,7 @@ Os fatores que serão utilizados para segmentar e comparar os dados são:
     * Nível 2: Médio/Grande (acima do 1º quartil)
 
 ## 8.4 Tratamentos (condições experimentais)
-Como se trata de um estudo observacional (*ex-post facto*) e não de um experimento controlado manipulado, os "tratamentos" referem-se aos grupos naturais formados pelas escolhas dos desenvolvedores. A tabela abaixo ilustra o desenho fatorial (2x2) e as combinações de tratamento:
+Como se trata de um estudo observacional e não de um experimento controlado manipulado, os "tratamentos" referem-se aos grupos naturais formados pelas escolhas dos desenvolvedores. A tabela abaixo ilustra o desenho fatorial e as combinações de tratamento:
 
 | ID do Grupo | Fator A: Linguagem | Fator B: Complexidade (Tamanho)* | Descrição do Tratamento (Combinação) |
 | :--- | :--- | :--- | :--- |
@@ -325,10 +325,10 @@ Fatores mantidos constantes para reduzir ruído e garantir a comparabilidade da 
 
 ## 9.1 Tipo de desenho
 Será utilizado um **Estudo de Coorte Retrospectivo (Longitudinal)**.
-*Justificativa:* Não é possível randomizar desenvolvedores para usar Python ou JS aleatoriamente em seus projetos pessoais. A abordagem correta é olhar para trás (retrospectivo) em uma coorte (grupo) de projetos iniciados em 2022 e observar como eles evoluíram ao longo do tempo até o abandono.
+*Justificativa:* Não é possível randomizar desenvolvedores para usar Python ou JS aleatoriamente em seus projetos pessoais. A abordagem correta é olhar para trás em um corte (grupo) de projetos iniciados em 2022 e observar como eles evoluíram ao longo do tempo até o abandono.
 
 ## 9.2 Randomização e alocação
-Não haverá randomização de sujeitos (desenvolvedores). A alocação nos grupos (Python vs. JS) é determinada pela propriedade intrínseca do repositório.
+Não haverá randomização de sujeitos (desenvolvedores). A alocação nos grupos (Python vs. JS) é determinada pela propriedade do repositório.
 Para a seleção dos dados, se o universo de dados exceder o limite da API, será feita uma **amostragem aleatória simples** dentro do conjunto de resultados retornados pela query de busca do GitHub.
 
 ## 9.3 Balanceamento e contrabalanço
@@ -344,7 +344,7 @@ Para a seleção dos dados, se o universo de dados exceder o limite da API, ser�
 # 10. População, sujeitos e amostragem
 
 ## 10.1 População-alvo
-A população alvo são desenvolvedores de software (estudantes, hobbistas e profissionais) que utilizam o GitHub para hospedar projetos pessoais de código aberto.
+A população alvo são desenvolvedores de software que utilizam o GitHub para hospedar projetos pessoais de código aberto.
 
 ## 10.2 Critérios de inclusão de sujeitos (Repositórios)
 Para ser elegível, o repositório deve:
