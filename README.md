@@ -395,6 +395,9 @@ Não aplicável a participantes humanos. A "preparação" refere-se à validaç�
 6.  **Persistência:** Salvar dados em arquivo CSV (`dataset_raw.csv`).
 7.  **Limpeza:** Remover outliers extremos e dados inconsistentes.
 
+## 11.3.1 Procedimento experimental (Diagrama)
+<img width="1914" height="3883" alt="Untitled diagram-2025-12-01-001149" src="https://github.com/user-attachments/assets/0d81ed47-aee1-45a1-a815-84bb76798f39" />
+
 ## 11.4 Plano de piloto
 * **Escopo:** Execução completa do pipeline com apenas 50 repositórios de cada linguagem.
 * **Objetivo:** Verificar se as métricas de tempo estão sendo calculadas corretamente e estimar o tempo de execução (custo de API) para a amostra total.
@@ -491,3 +494,98 @@ O projeto é de **baixo custo financeiro**, dependendo principalmente de horas d
 | Google Colab | R$ 0,00 (Gratuito) | Free Tier |
 | Horas de Trabalho (Pesquisador) | ~120h (Inestimável) | Dedicação Acadêmica (Não remunerada) |
 | **Total Financeiro** | **R$ 0,00** | - |
+
+# 16. Cronograma, marcos e riscos operacionais
+
+## 16.1 Macrocronograma (até o início da execução)
+Considerando o cenário atual (final de 2025), o cronograma visa aproveitar o período de férias para a coleta massiva de dados.
+
+| Fase | Atividade Chave | Previsão de Início | Previsão de Fim |
+| :--- | :--- | :--- | :--- |
+| **Planejamento** | Finalização do desenho experimental e revisão do plano | 20/11/2025 | 05/12/2025 |
+| **Instrumentação** | Codificação dos scripts de mineração e testes de API | 01/12/2025 | 10/12/2025 |
+| **Piloto** | Execução controlada (n=100) e validação de consistência | 11/12/2025 | 14/12/2025 |
+| **Execução** | Coleta de dados completa (n > 2.000) e tratamento | 15/12/2025 | 22/12/2025 |
+| **Análise** | Aplicação de estatística (Kaplan-Meier) e escrita dos resultados | 05/01/2026 | 28/02/2026 |
+
+## 16.2 Dependências entre atividades
+A execução segue um fluxo linear com dependências bloqueantes (*Hard Dependencies*):
+1.  **Aprovação do Plano → Instrumentação:** O script só será finalizado após definição das variáveis exatas.
+2.  **Sucesso do Piloto → Execução Massiva:** A coleta total só inicia se o piloto não apresentar erros de *Rate Limit* ou dados nulos.
+3.  **Dataset Congelado → Análise Estatística:** A análise de sobrevivência requer que o dataset esteja fechado e limpo.
+
+## 16.3 Riscos operacionais e plano de contingência
+
+| Risco | Probabilidade | Impacto | Plano de Contingência |
+| :--- | :--- | :--- | :--- |
+| **Bloqueio da API (Rate Limit)** | Média | Alto (Interrupção) | Implementar *sleep timers* agressivos no código e utilizar chaves (Tokens) rotativas se necessário. |
+| **Qualidade Ruim dos Dados** | Alta | Médio (Viés) | Reforçar filtros de exclusão pré-coleta (descartar projetos "Hello World" ou sem descrição). |
+| **Perda de Dados Locais** | Baixa | Altíssimo | Sincronização automática dos arquivos `.csv` gerados no Google Colab para o Google Drive a cada 100 iterações. |
+| **Mudança na API do GitHub** | Baixa | Alto (Refatoração) | Acompanhar o *Developer Blog* do GitHub; se houver *breaking changes*, ajustar o script para nova versão. |
+
+# 17. Governança do experimento
+
+## 17.1 Papéis e responsabilidades formais
+* **Pesquisador Principal (Lúcio Alves):** Responsável pelo desenvolvimento de scripts, coleta, limpeza de dados e escrita da monografia. Tem autoridade técnica sobre o tratamento dos dados.
+* **Orientador Acadêmico:** Responsável pela validação do método científico e aceite final do TCC. Atua como consultor em dúvidas estatísticas.
+
+## 17.2 Ritos de acompanhamento pré-execução
+* **Checkpoints Quinzenais:** Reuniões (remotas ou presenciais) para mostrar progresso do código e parciais do texto.
+* **Revisão do Piloto (Milestone):** Reunião específica após o dia 14/12 para analisar a planilha gerada no piloto e autorizar a coleta final.
+
+## 17.3 Processo de controle de mudanças no plano
+Caso seja necessário alterar o escopo (ex: remover JavaScript e focar só em Python), o processo será:
+1.  **Registro:** Atualizar a seção "Histórico de Revisão" deste documento.
+2.  **Comunicação:** E-mail formal para o orientador justificando a mudança técnica.
+3.  **Aprovação:** Aceite do orientador antes de rodar a coleta nova.
+
+# 18. Plano de documentação e reprodutibilidade
+
+## 18.1 Repositórios e convenções de nomeação
+* **Localização:** Todo o material será hospedado em repositório público no GitHub ao final do trabalho.
+* **Convenção de Arquivos:**
+    * Scripts: `src/01_data_collection.py`, `src/02_data_cleaning.py`
+    * Dados: `data/raw/dataset_2022_full.csv`, `data/processed/survival_data.csv`
+    * Notebooks: `notebooks/analysis_survival_curves.ipynb`
+
+## 18.2 Templates e artefatos padrão
+* **Log de Execução:** O script gerará um arquivo `run.log` registrando data, hora, número de repositórios processados e erros encontrados.
+* **Dicionário de Dados:** Arquivo `data_dictionary.md` explicando o significado de cada coluna do CSV final.
+
+## 18.3 Plano de empacotamento para replicação futura
+Para garantir a reprodutibilidade científica (Replication Package):
+1.  **Ambiente Virtual:** Inclusão de arquivo `requirements.txt` com versões exatas das bibliotecas (`pandas`, `lifelines`, `PyGithub`).
+2.  **Sementes Aleatórias:** Uso de `random_seed = 42` (ou similar) em funções de amostragem para que a seleção dos repositórios possa ser replicada.
+3.  **Instruções:** Arquivo `README.md` detalhado com passo a passo para gerar novos Tokens do GitHub e rodar o script.
+
+# 19. Plano de comunicação
+
+## 19.1 Públicos e mensagens-chave pré-execução
+* **Orientador:** Comunicar prontidão técnica ("O script roda sem erros") e cronograma de feriados ("A coleta rodará automaticamente durante o recesso").
+* **Instituição de Ensino:** Cumprir os prazos de entrega de pré-projetos e relatórios parciais via sistema acadêmico.
+
+## 19.2 Canais e frequência de comunicação
+* **E-mail:** Canal oficial para envio de versões do documento e datasets.
+* **Reuniões de Orientação:** Frequência quinzenal na fase de planejamento; sob demanda na fase de execução.
+
+## 19.3 Pontos de comunicação obrigatórios
+* Conclusão do Plano Experimental (v1.0).
+* Início da Coleta de Dados (Aviso de "Go").
+* Finalização da Coleta e início da Análise.
+* Qualquer incidente que comprometa o prazo final do TCC.
+
+# 20. Critérios de prontidão para execução (Definition of Ready)
+
+## 20.1 Checklist de prontidão (itens que devem estar completos)
+A fase de execução (coleta massiva) só será iniciada quando:
+
+- [ ] **Plano:** Documento de planejamento aprovado pelo orientador.
+- [ ] **Token:** Chave de API do GitHub configurada e testada.
+- [ ] **Script:** Código rodando sem erros de sintaxe no Google Colab.
+- [ ] **Piloto:** Amostra de 50-100 repositórios coletada e validada manualmente (verificado se as datas fazem sentido).
+- [ ] **Storage:** Google Drive conectado e com espaço disponível.
+
+## 20.2 Aprovações finais para iniciar a operação
+* **Autoridade:** Orientador Acadêmico.
+* **Forma de Aprovação:** E-mail ou validação verbal durante reunião de checkpoint.
+* **Critério:** "O dataset do piloto parece consistente e as métricas respondem às perguntas da pesquisa."
