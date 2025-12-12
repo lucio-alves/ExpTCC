@@ -63,104 +63,71 @@ A oportunidade é mapear a **curva de desistência**, para entender quanto tempo
 - **Time-to-Abandonment:** Métrica definida como o intervalo entre o primeiro e o último commit.  
 - **Hipótese da Curva da Empolgação:** Teoria que sugere que o esforço em projetos pessoais decai rapidamente após o fim da novidade inicial.
 
-# 3. Objetivos e questões (Goal / Question / Metric)
+# 3. Objetivos e Questões (Goal / Question / Metric)
 
-## 3.1 Objetivo geral (Goal template)
+## 3.1 Objetivo Geral (Goal Template)
 
-### Elemento
+| Elemento | Descrição |
+| :--- | :--- |
+| **Analisar** | Repositórios de software pessoais (Open Source) |
+| **Com o propósito de** | Caracterizar a longevidade, identificar pontos críticos de abandono e validar infraestrutura de coleta |
+| **Sob a perspectiva de** | Pesquisador de Engenharia de Software (MSR) |
+| **No contexto de** | Projetos criados no GitHub durante o ano de 2022, nas linguagens Python e JavaScript |
 
--   **Analisar**
-    -   Repositórios de software pessoais (Open Source)
--   **Com o propósito de**
-    -   Caracterizar a longevidade, identificar pontos críticos de
-        abandono e validar infraestrutura de coleta de dados
--   **Sob a perspectiva de**
-    -   Pesquisador de Engenharia de Software (MSR)
--   **No contexto de**
-    -   Projetos criados no GitHub durante o ano de 2022, nas linguagens
-        Python e JavaScript
+## 3.2 Objetivos Específicos
 
-## 3.2 Objetivos específicos
-
--   **O1:** Mapear a distribuição estatística do tempo de vida
-    (Lifespan) dos repositórios para determinar a mediana de
-    sobrevivência.
--   **O2:** Investigar a existência de um padrão de "morte precoce"
-    (abandono nos primeiros meses) e quantificar esse fenômeno.
--   **O3:** Analisar se a escolha da linguagem de programação (Python
-    vs. JavaScript) influencia a taxa de abandono.
--   **O4:** Correlacionar o tamanho e complexidade inicial do projeto
-    com sua capacidade de sobrevivência a longo prazo.
+-   **O1:** Mapear a distribuição estatística do tempo de vida (Lifespan) dos repositórios para determinar a mediana de sobrevivência.
+-   **O2:** Investigar a existência de um padrão de "morte precoce" (abandono nos primeiros meses) e quantificar esse fenômeno.
+-   **O3:** Analisar se a escolha da linguagem de programação (Python vs. JavaScript) influencia a taxa de abandono.
+-   **O4:** Correlacionar o tamanho e complexidade inicial do projeto com sua capacidade de sobrevivência a longo prazo.
 
 ## 3.3 e 3.4 Matriz GQM (Questões e Métricas)
 
 ### O1 (Distribuição)
-
--   **Q1.1** Qual é a mediana e a média de tempo de vida dos projetos
-    analisados?
-    -   **Métricas:**
-        -   M01 --- Lifespan (Days)
-        -   M02 --- Date Created
--   **Q1.2** Qual a proporção de projetos "One-Hit Wonder" (apenas um
-    dia de atividade)?
-    -   **Métricas:**
-        -   M03 --- Commit Count
-        -   M01 --- Lifespan (Days)
--   **Q1.3** Existe uma variação significativa na longevidade entre
-    semestres de criação?
-    -   **Métricas:**
-        -   M02 --- Date Created
-        -   M01 --- Lifespan (Days)
+| ID Questão | Pergunta (Question) | Métricas Associadas (Metric) |
+| :--- | :--- | :--- |
+| **Q1.1** | Qual é a mediana e a média de tempo de vida dos projetos analisados? | **M01** - Lifespan (Days)<br>**M02** - Date Created |
+| **Q1.2** | Qual a proporção de projetos "One-Hit Wonder" (apenas um dia de atividade)? | **M03** - Commit Count<br>**M01** - Lifespan (Days) |
+| **Q1.3** | Existe uma variação significativa na longevidade entre semestres de criação? | **M02** - Date Created<br>**M01** - Lifespan (Days) |
 
 ### O2 (Morte Precoce)
-
--   **Q2.1** Qual a porcentagem de repositórios abandonados em menos de
-    90 dias?
-    -   **Métricas:**
-        -   M04 --- Early Dropout Rate
-        -   M01 --- Lifespan (Days)
--   **Q2.2** Em qual mês ocorre o pico de taxa de abandono?
-    -   **Métricas:**
-        -   M05 --- Peak Abandonment Month
-        -   M06 --- Last Commit Date
--   **Q2.3** Projetos que sobrevivem aos primeiros 3 meses tendem a
-    durar quanto tempo mais?
-    -   **Métricas:**
-        -   M07 --- Conditional Lifespan
-        -   M01 --- Lifespan (Days)
+| ID Questão | Pergunta (Question) | Métricas Associadas (Metric) |
+| :--- | :--- | :--- |
+| **Q2.1** | Qual a porcentagem de repositórios abandonados em menos de 90 dias? | **M04** - Early Dropout Rate<br>**M01** - Lifespan (Days) |
+| **Q2.2** | Em qual mês ocorre o pico de taxa de abandono? | **M05** - Peak Abandonment Month<br>**M06** - Last Commit Date |
+| **Q2.3** | Projetos que sobrevivem aos primeiros 3 meses tendem a durar quanto tempo mais? | **M07** - Conditional Lifespan<br>**M01** - Lifespan (Days) |
 
 ### O3 (Linguagem)
-
--   **Q3.1** Existe diferença estatística na mediana de vida entre
-    projetos Python e JavaScript?
-    -   **Métricas:**
-        -   M08 --- Primary Language
-        -   M01 --- Lifespan (Days)
--   **Q3.2** Qual linguagem apresenta maior taxa de projetos com menos
-    de 10 commits?
-    -   **Métricas:**
-        -   M08 --- Primary Language
-        -   M03 --- Commit Count
--   **Q3.3** A frequência de commits varia conforme a linguagem?
-    -   **Métricas:**
-        -   M09 --- Commit Frequency
-        -   M08 --- Primary Language
+| ID Questão | Pergunta (Question) | Métricas Associadas (Metric) |
+| :--- | :--- | :--- |
+| **Q3.1** | Existe diferença estatística na mediana de vida entre projetos Python e JavaScript? | **M08** - Primary Language<br>**M01** - Lifespan (Days) |
+| **Q3.2** | Qual linguagem apresenta maior taxa de projetos com menos de 10 commits? | **M08** - Primary Language<br>**M03** - Commit Count |
+| **Q3.3** | A frequência de commits varia conforme a linguagem? | **M09** - Commit Frequency<br>**M08** - Primary Language |
 
 ### O4 (Complexidade)
+| ID Questão | Pergunta (Question) | Métricas Associadas (Metric) |
+| :--- | :--- | :--- |
+| **Q4.1** | Projetos que iniciam maiores (em KB) tendem a viver mais? | **M10** - Repository Size<br>**M01** - Lifespan (Days) |
+| **Q4.2** | A quantidade de arquivos iniciais é um preditor de longevidade? | **M11** - File Count (Initial)<br>**M01** - Lifespan (Days) |
+| **Q4.3** | Repositórios com descrições detalhadas sobrevivem mais? | **M12** - Description Length<br>**M01** - Lifespan (Days) |
 
--   **Q4.1** Projetos que iniciam maiores (em KB) tendem a viver mais?
-    -   **Métricas:**
-        -   M10 --- Repository Size
-        -   M01 --- Lifespan (Days)
--   **Q4.2** A quantidade de arquivos iniciais é um preditor de
-    longevidade?
-    -   **Métricas:**
-        -   M11 --- File Count (Initial)
-        -   M01 --- Lifespan (Days)
--   **Q4.3** Repositórios com descrições detalhadas sobrevivem mais?
-    -   **Métricas:**
-        -   M12 --- Description Length
-        -   M01 --- Lifespan (Days)
+## 3.5 Definição das Métricas
+*Tabela de referência contendo descrição e unidade de todas as métricas citadas acima.*
+
+| ID | Nome da Métrica | Descrição da Métrica | Unidade |
+| :--- | :--- | :--- | :--- |
+| **M01** | Lifespan | Diferença temporal entre o último e o primeiro commit do repositório. | Dias |
+| **M02** | Date Created | Data de criação do repositório registrada no GitHub. | Data (YYYY-MM-DD) |
+| **M03** | Commit Count | Número total de commits realizados no branch principal. | Inteiro (Contagem) |
+| **M04** | Early Dropout Rate | Percentual de projetos da amostra com Lifespan < 90 dias. | Porcentagem (%) |
+| **M05** | Peak Abandonment Month | O mês (relativo ao início do projeto) onde ocorre o maior número de últimos commits. | Inteiro (Mês ordinal) |
+| **M06** | Last Commit Date | Data do último commit registrado no repositório. | Data (YYYY-MM-DD) |
+| **M07** | Conditional Lifespan | Expectativa de vida adicional dado que o projeto já sobreviveu X dias. | Dias |
+| **M08** | Primary Language | Linguagem predominante detectada pelo GitHub Linguist. | Categórica (Nominal) |
+| **M09** | Commit Frequency | Média de commits por dia ativo. | Commits/Dia |
+| **M10** | Repository Size | Tamanho do repositório em disco no momento da coleta. | Kilobytes (KB) |
+| **M11** | File Count (Initial) | Número de arquivos presentes no primeiro commit/semana do projeto. | Inteiro (Contagem) |
+| **M12** | Description Length | Número de caracteres na descrição (about) do repositório. | Inteiro (Caracteres) |
 
 # 4. Escopo e contexto do experimento
 
